@@ -119,10 +119,8 @@ export default class SortByLocationTab extends Component {
   getStadiums = async () => {
 
     this.setState({ loading: true }, async () => {
-      console.log("Came into here blyat")
       //GETTING STADIUM FROM ASYNC STORAGE , IF NOT EXIST TAKE THEM FROM API
       let stadiums = await AsyncStorage.getItem("stadiums");
-
       if (stadiums == null || stadiums.length == 0 || stadiums == undefined) {
         await fetch(APILINK + "getstadiums/").then((resp) => {
           return resp.json();
@@ -140,26 +138,20 @@ export default class SortByLocationTab extends Component {
       }
       else
         stadiums = await JSON.parse(stadiums);
-
       //GETTING LONG AND LAT OF STADIUMS AND CALCULATING THE DISTANCE BETWEEN USER'S LOCATION AND STADIUM
-
       for (let i = 0; i < stadiums.length; i++) {
         var LongLatLocation = await Location.geocodeAsync(stadiums[i].venue_hebrew_name);
         stadiums[i].latitude = LongLatLocation[0].latitude;
         stadiums[i].longitude = LongLatLocation[0].longitude;
+        //getting distance between user's location and stadium's location
         let x = await getPreciseDistance({ latitude: this.state.latitude, longitude: this.state.longitude }, { latitude: LongLatLocation[0].latitude, longitude: LongLatLocation[0].longitude });
         stadiums[i].distance = x / 1000;
       }
-
       //SORTING THE ARRAY FROM CLOSE TO FAR BY DISTANCE
       await stadiums.sort((a, b) => a.distance === b.distance ? 0 : a.distance > b.distance || -1);
       this.setState({ stadiums, loading: false, dontload: false }, () => console.log(this.state.stadiums));
 
     });
-
-
-
-
   }
   componentWillUnmount() {
     this._unsubscribeFocus();

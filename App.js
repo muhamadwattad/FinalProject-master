@@ -10,7 +10,7 @@ import React from 'react';
 import StackPage from './Pages/ScreensPages/StackPage';
 import { StatusBar } from 'expo-status-bar';
 import { createStackNavigator } from '@react-navigation/stack';
-
+console.disableYellowBox = true;
 const Stack = createStackNavigator();
 
 
@@ -48,7 +48,7 @@ export default class App extends React.Component {
 
       } else {
         var stadiums = data;
-        
+
         await AsyncStorage.setItem("stadiums", JSON.stringify(data));
       }
     })
@@ -67,6 +67,7 @@ export default class App extends React.Component {
     })
   }
   async componentDidMount() {
+    console.ignoredYellowBox = ['Warning: Each', 'Warning: Failed'];
     AppState.addEventListener('change', this._handleAppStateChange);
 
     //getting teams and saving them into the AsyncStorage
@@ -75,7 +76,7 @@ export default class App extends React.Component {
     while (teams == null) {
 
       var url = APILINK + "getteams/"
-      
+
       await fetch(url).then((resp) => {
         return resp.json();
       }).then(async (data) => {
@@ -112,7 +113,7 @@ export default class App extends React.Component {
       }
     }
     this.setState({ appState: nextAppState }, () => {
-      
+
     });
 
   }

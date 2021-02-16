@@ -383,24 +383,16 @@ export default class HomePage extends Component {
     //getting teams
     var teams = await JSON.parse(await AsyncStorage.getItem("teams"));
     this.setState({ teams }, () => {
-
-
     });
-
     //updating user's status TO ACTIVE
-
     var user = await AsyncStorage.getItem("activeuser");
     var currentuser = JSON.parse(user);
     var url = APILINK + "updateStatus/" + currentuser.email + "/true/"
     await fetch(url);
     //GETTING GAMES
     //GETTING TODAY's GAMES AND SAVING THEM INTO THE STATE
-
     var TodayDate = TurnDate(this.state.todaystring);
     var url = APILINK + "getgamesbydate/" + TodayDate + "/";
-
-
-
     await fetch(url).then((resp) => {
       return resp.json();
     }).then(async (data) => {
@@ -409,15 +401,12 @@ export default class HomePage extends Component {
         //SHOWING ERROR MESSAGE
         this.setState({ games: "No Games Found" });
         this.setState({ showError: true });
-
       }
       else {
         //SAVING GAMES INTO ARRAY IN THE STATE AND IN STATE
         this.setState({ games: data });
       }
     });
-
-
   }
 
   getDates = async () => {

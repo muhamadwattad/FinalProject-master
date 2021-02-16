@@ -48,7 +48,10 @@ export default class StackPage extends Component {
             }}
           />
           <Stack.Screen name="ForgetPage" component={ForgetPassword}
-            options={{ headerShown: false }}
+            options={{
+              headerShown: true,
+              title: '',
+            }}
           />
         </Stack.Navigator>
       </NavigationContainer>

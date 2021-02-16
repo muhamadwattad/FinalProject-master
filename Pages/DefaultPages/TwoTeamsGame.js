@@ -41,10 +41,10 @@ export default class TwoTeamsGame extends Component {
       games: [],
       openmodal: false,
       error: "בחר שתי קבוצות שונות כדי לראות את המשחקים ביניהן.",
-      showError:false
+      showError: false
     };
   }
-  async componentDidMount() {}
+  async componentDidMount() { }
   async UNSAFE_componentWillMount() {
     //GETTING TEAMS AND SAVING THEM INTO THE STATE
     var teams = await JSON.parse(await AsyncStorage.getItem("teams"));
@@ -62,8 +62,9 @@ export default class TwoTeamsGame extends Component {
     }
     if (team1 == team2) {
       // shows error message that user has to choose 2 different teams
-      this.setState({ error: "בחר בשתי קבוצות שונות",games:[],showError:true
-     });
+      this.setState({
+        error: "בחר בשתי קבוצות שונות", games: [], showError: true
+      });
     } else {
       //GETTING GAMES FROM API
 
@@ -74,10 +75,10 @@ export default class TwoTeamsGame extends Component {
           return resp.json();
         })
         .then((data) => {
-          
+
           if ("Message" in data) {
             console.log("test");
-            this.setState({ error: "לא נמצאו משחקים בין שתי הקבוצות.",games:[],showError:true,showError:true });
+            this.setState({ error: "לא נמצאו משחקים בין שתי הקבוצות.", games: [], showError: true, showError: true });
           } else {
             this.setState({ games: data });
           }
@@ -104,7 +105,7 @@ export default class TwoTeamsGame extends Component {
               />
             </Button>
           </Right>
-        
+
         </Header>
 
         <View
@@ -173,94 +174,94 @@ export default class TwoTeamsGame extends Component {
         <Content>
           {this.state.games.length == 0 || this.state.games == null ? (
             <View>
-            <Text style={{ textAlign: 'center', alignItems: 'center', fontSize: 25, marginTop: '50%' }}>{this.state.error}</Text>
+              <Text style={{ textAlign: 'center', alignItems: 'center', fontSize: 25, marginTop: '50%' }}>{this.state.error}</Text>
             </View>
           ) : (
-            <List scrollEnabled={true}>
-              {this.state.games.map((game, index) => {
-                var homeTeam = this.state.teams.find(
-                  (team) => team.team_id == game.homeTeamCode
-                );
-                var awayTeam = this.state.teams.find(
-                  (team) => team.team_id == game.awayTeamCode
-                );
-                var matchdate = game.event_date.split(" ")[0];
-                var matchdate2 = game.event_date.split(" ")[1];
-                var monthtoEdit = matchdate[0] + "" + matchdate[1];
-                var daytoEdit = matchdate[3] + "" + matchdate[4];
-                var yeartoEdit = matchdate.slice(-4);
-                matchdate = daytoEdit + "/" + monthtoEdit + "/" + yeartoEdit;
-                matchdate2=matchdate2.substring(0,matchdate2.length-3)+" IT"
-                return (
-                  <ListItem key={index.toString()}>
-                    {/*HOME TEAM*/}
-                    <View
-                      style={{
-                        justifyContent: "space-between",
-                        flexDirection: "row",
-                        width: "100%",
-                        display: "flex",
-                      }}
-                    >
-                      <View style={{ alignItems: "flex-start" }}>
-                        <Thumbnail source={{ uri: homeTeam.logo }} />
-                      </View>
-                      <View style={{ borderColor: "black" }}>
-                        <Text style={{ textAlign: "center" }}>
-                          {" "}
-                          {matchdate}
-                        </Text>
+              <List scrollEnabled={true}>
+                {this.state.games.map((game, index) => {
+                  var homeTeam = this.state.teams.find(
+                    (team) => team.team_id == game.homeTeamCode
+                  );
+                  var awayTeam = this.state.teams.find(
+                    (team) => team.team_id == game.awayTeamCode
+                  );
+                  var matchdate = game.event_date.split(" ")[0];
+                  var matchdate2 = game.event_date.split(" ")[1];
+                  var monthtoEdit = matchdate[0] + "" + matchdate[1];
+                  var daytoEdit = matchdate[3] + "" + matchdate[4];
+                  var yeartoEdit = matchdate.slice(-4);
+                  matchdate = daytoEdit + "/" + monthtoEdit + "/" + yeartoEdit;
+                  matchdate2 = matchdate2.substring(0, matchdate2.length - 3) + " IT"
+                  return (
+                    <ListItem key={index.toString()}>
+                      {/*HOME TEAM*/}
+                      <View
+                        style={{
+                          justifyContent: "space-between",
+                          flexDirection: "row",
+                          width: "100%",
+                          display: "flex",
+                        }}
+                      >
+                        <View style={{ alignItems: "flex-start" }}>
+                          <Thumbnail source={{ uri: homeTeam.logo }} />
+                        </View>
+                        <View style={{ borderColor: "black" }}>
+                          <Text style={{ textAlign: "center" }}>
+                            {" "}
+                            {matchdate}
+                          </Text>
 
-                        <Text2 note>{matchdate2}</Text2>
-                        <Text2
-                          note
-                          style={{ color: "#228B22" }}
-                          onPress={() => {
-                            this.setState({
-                              openmodal: true,
-                              gameinfo: game,
-                              homeTeam,
-                              awayTeam,
-                            });
-                          }}
-                        >
-                          {" "}
+                          <Text2 note>{matchdate2}</Text2>
+                          <Text2
+                            note
+                            style={{ color: "#228B22" }}
+                            onPress={() => {
+                              this.setState({
+                                openmodal: true,
+                                gameinfo: game,
+                                homeTeam,
+                                awayTeam,
+                              });
+                            }}
+                          >
+                            {" "}
                           צפיה בפרטי המשחק
                         </Text2>
+                        </View>
+                        {/*AWAY TEAM*/}
+                        <View style={{ alignItems: "flex-end" }}>
+                          <Thumbnail source={{ uri: awayTeam.logo }} />
+                        </View>
                       </View>
-                      {/*AWAY TEAM*/}
-                      <View style={{ alignItems: "flex-end" }}>
-                        <Thumbnail source={{ uri: awayTeam.logo }} />
-                      </View>
-                    </View>
-                
-                  </ListItem>
-                );
-              })}
-            </List>
-          )}
+
+                    </ListItem>
+                  );
+                })}
+              </List>
+            )}
         </Content>
 
 
         <AwesomeAlert
-            show={this.state.showError}
-            showProgress={false}
-            title="שְׁגִיאָה!"
-            message={this.state.error}
-            closeOnTouchOutside={false}
-            closeOnHardwareBackPress={false}
-            showCancelButton={false}
-            showConfirmButton={true}
-            cancelText="No, cancel"
-            confirmText="לְהַמשִׁיך"
-            confirmButtonColor="#DD6B55"
-            onCancelPressed={() => {
-              this.setState({ showError: false })
-            }}
-            onConfirmPressed={() => {
-              this.setState({ showError: false })
-            }}
-          />
+          show={this.state.showError}
+          showProgress={false}
+          title="שְׁגִיאָה!"
+          message={this.state.error}
+          closeOnTouchOutside={false}
+          closeOnHardwareBackPress={false}
+          showCancelButton={false}
+          showConfirmButton={true}
+          cancelText="No, cancel"
+          confirmText="לְהַמשִׁיך"
+          confirmButtonColor="#DD6B55"
+          onCancelPressed={() => {
+            this.setState({ showError: false })
+          }}
+          onConfirmPressed={() => {
+            this.setState({ showError: false })
+          }}
+        />
 
         <Modal visible={this.state.openmodal} animationType="slide">
           <Header style={{ backgroundColor: "white" }}>
@@ -280,9 +281,6 @@ export default class TwoTeamsGame extends Component {
                 />
               </Button>
             </Right>
-            <Body>
-              <Text>TEST TEST</Text>
-            </Body>
           </Header>
 
           <GameInfo
